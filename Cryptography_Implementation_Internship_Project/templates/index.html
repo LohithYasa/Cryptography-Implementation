@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cryptography Implementation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<nav>
+    <h2>CryptoShield</h2>
+    <a href="/download-report">Download Report</a>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <span class="badge">Cybersecurity Internship Project</span>
+        <h1>Cryptography Algorithms Implementation</h1>
+        <p>Encrypt, decrypt, hash, verify files, check password strength, and generate secure passwords.</p>
+    </div>
+</section>
+
+<main class="container">
+    <section class="cards">
+        <div class="card">
+            <h3>Encryption / Decryption</h3>
+            <form method="POST">
+                <label>Select Operation</label>
+                <select name="operation">
+                    <option value="caesar_encrypt">Caesar Encrypt</option>
+                    <option value="caesar_decrypt">Caesar Decrypt</option>
+                    <option value="vigenere_encrypt">Vigenere Encrypt</option>
+                    <option value="vigenere_decrypt">Vigenere Decrypt</option>
+                    <option value="xor_encrypt">XOR Encrypt</option>
+                    <option value="xor_decrypt">XOR Decrypt</option>
+                    <option value="base64_encode">Base64 Encode</option>
+                    <option value="base64_decode">Base64 Decode</option>
+                </select>
+
+                <label>Enter Text</label>
+                <textarea name="text" placeholder="Enter message here..." required></textarea>
+
+                <div class="grid-2">
+                    <div>
+                        <label>Key</label>
+                        <input type="text" name="key" placeholder="For Vigenere/XOR">
+                    </div>
+                    <div>
+                        <label>Shift</label>
+                        <input type="number" name="shift" value="3">
+                    </div>
+                </div>
+
+                <button type="submit">Process</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Hash Generator</h3>
+            <form method="POST">
+                <input type="hidden" name="operation" value="hash">
+                <label>Hash Algorithm</label>
+                <select name="hash_algorithm">
+                    <option value="md5">MD5</option>
+                    <option value="sha1">SHA1</option>
+                    <option value="sha256" selected>SHA256</option>
+                    <option value="sha512">SHA512</option>
+                </select>
+                <label>Enter Text</label>
+                <textarea name="text" placeholder="Enter text to hash..." required></textarea>
+                <button type="submit">Generate Hash</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Password Security</h3>
+            <form method="POST">
+                <input type="hidden" name="operation" value="password_strength">
+                <label>Enter Password</label>
+                <input type="text" name="text" placeholder="Enter password" required>
+                <button type="submit">Check Strength</button>
+            </form>
+
+            <form method="POST" class="mini-form">
+                <input type="hidden" name="operation" value="generate_password">
+                <button type="submit" class="secondary">Generate Secure Password</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>File Hash Verification</h3>
+            <form action="/file-hash" method="POST" enctype="multipart/form-data">
+                <label>Select File</label>
+                <input type="file" name="file" required>
+
+                <label>Hash Algorithm</label>
+                <select name="file_hash_algorithm">
+                    <option value="md5">MD5</option>
+                    <option value="sha1">SHA1</option>
+                    <option value="sha256" selected>SHA256</option>
+                    <option value="sha512">SHA512</option>
+                </select>
+
+                <button type="submit">Generate File Hash</button>
+            </form>
+        </div>
+    </section>
+
+    {% if result %}
+    <section class="result-card">
+        <h3>Output Result</h3>
+        <pre>{{ result }}</pre>
+
+        {% if strength %}
+        <div class="strength-box">
+            <div class="strength-bar">
+                <div class="fill" style="width: {{ strength.score }}%;"></div>
+            </div>
+            <p><strong>Level:</strong> {{ strength.level }}</p>
+            {% if recommendations %}
+            <ul>
+                {% for item in recommendations %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {% endif %}
+    </section>
+    {% endif %}
+
+    <section class="info">
+        <h2>Implemented Algorithms</h2>
+        <div class="info-grid">
+            <div><strong>Caesar Cipher:</strong> Substitution cipher using shift value.</div>
+            <div><strong>Vigenere Cipher:</strong> Key-based polyalphabetic encryption.</div>
+            <div><strong>XOR:</strong> Symmetric key encryption using bitwise XOR.</div>
+            <div><strong>Hashing:</strong> MD5, SHA1, SHA256, and SHA512.</div>
+            <div><strong>Base64:</strong> Encoding and decoding text data.</div>
+            <div><strong>File Hash:</strong> Verifies file integrity.</div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>Cryptography Implementation Project | Cybersecurity Internship Submission</p>
+</footer>
+</body>
+</html>
